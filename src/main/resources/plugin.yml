@@ -1,0 +1,12 @@
+name: AchievementBingo
+prefix: AchievementBingo
+main: io.github.link5669.AchievementBingo.AchievementBingo
+version: "1.0"
+api-version: "1.14"
+description: Bingo commands.
+commands:
+   bingo:
+      description: This is a demo command.
+      usage: /bingo
+      permission: AchievementBingo.bingo
+      permission-message: You don't have permission

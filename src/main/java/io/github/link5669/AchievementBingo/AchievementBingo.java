@@ -1,0 +1,199 @@
+package io.github.link5669.AchievementBingo;
+
+import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Iterator;
+import java.util.List;
+import org.bukkit.Bukkit;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.event.player.PlayerAdvancementDoneEvent;
+
+public final class AchievementBingo extends JavaPlugin implements Listener, CommandExecutor {
+//	private List<BingoPlayer> bingoNameList = new ArrayList<BingoPlayer>();
+	private Advancement[] gameAdvancements = new Advancement[24];
+	
+	@Override
+    public void onEnable() {
+		getLogger().info("onEnable has been invoked! Building advancement list");
+        for (Iterator<Advancement> iter = Bukkit.getServer().advancementIterator(); iter.hasNext(); ) {
+            Advancement adv = iter.next();
+            String caseKey = adv.getKey().toString();
+            switch (caseKey) {
+            case "minecraft:story/form_obsidian":
+                this.gameAdvancements[0] = adv;
+            case "minecraft:nether/brew_potion":
+                this.gameAdvancements[1] = adv;
+            case "minecraft:nether/distract_piglin":
+                this.gameAdvancements[2] = adv;
+            case "minecraft:nether/get_wither_skull":
+                this.gameAdvancements[3] = adv;
+    		case "minecraft:story/follow_ender_eye":
+                this.gameAdvancements[4] = adv;
+    		case "minecraft:adventure/ol_betsy":
+                this.gameAdvancements[5] = adv;
+    		case "minecraft:adventure/hero_of_the_village":
+                this.gameAdvancements[6] = adv;
+    		case "minecraft:nether/ride_strider":
+                this.gameAdvancements[7] = adv;
+    		case "minecraft:nether/obtain_blaze_rod":
+                this.gameAdvancements[8] = adv;
+    		case "minecraft:end/enter_end_gateway":
+                this.gameAdvancements[9] = adv;
+    		case "minecraft:story/enchant_item":
+                this.gameAdvancements[10] = adv;
+    		case "minecraft:adventure/trade":
+                this.gameAdvancements[11] = adv;
+    		case "minecraft:adventure/kill_a_mob":
+                this.gameAdvancements[12] = adv;
+    		case "minecraft:adventure/summon_iron_golem":
+                this.gameAdvancements[13] = adv;
+    		case "minecraft:story/shiny_gear":
+                this.gameAdvancements[14] = adv;
+    		case "minecraft:adventure/whos_the_pillager_now":
+                this.gameAdvancements[15] = adv;
+    		case "minecraft:story/voluntary_exile":
+                this.gameAdvancements[16] = adv;
+    		case "minecraft:husbandry/bee_our_guest":
+                this.gameAdvancements[17] = adv;
+            }
+        }
+        String location = "/Users/milesacq/server164vanilla/plugins/bingoSaves";
+        Path path = Paths.get(location);
+        if (!Files.exists(path)) {
+	        try {
+	            File saveFile = new File("/Users/milesacq/server164vanilla/plugins/bingoSaves");
+	            saveFile.mkdir();
+	         } catch(Exception e) {
+	            e.printStackTrace();
+	         }
+        }
+//        getLogger().info(this.gameAdvancements[15].getKey().toString());
+		getServer().getPluginManager().registerEvents(this, this);
+    }
+    
+    @Override
+    public void onDisable() {
+    	getLogger().info("onDisable has been invoked!");
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    	
+    	if (cmd.getName().equalsIgnoreCase("bingo") && args.length == 2) {
+    		Player target = Bukkit.getPlayer(args[1]);
+    		BingoPlayer bPlayer = new BingoPlayer();
+    		bPlayer.setPlayerName(target);
+    		String location = "/Users/milesacq/server164vanilla/plugins/bingoSaves/" + bPlayer.getPlayerName() + ".txt";
+            Path path = Paths.get(location);
+    		if (target == null) {
+	        	getLogger().info(args[1] + " is not currently online.");
+	        	return false;
+    		}
+    		if ((Files.exists(path)) && args[0].equalsIgnoreCase("check")) {
+		    	String[] progress = bPlayer.getAchievementProgress(path);
+    			target.sendMessage(progress[0] +  progress[1] + progress[2] + progress[3] + progress[4]);
+    			target.sendMessage(progress[5] +  progress[6] + progress[7] + progress[8] + progress[9]);
+    			target.sendMessage(progress[10] +  progress[11] + progress[12] + progress[13] + progress[14]);
+    			target.sendMessage(progress[15] +  progress[16] + progress[17] + progress[18] + progress[19]);
+    			target.sendMessage(progress[20] +  progress[21] + progress[22] + progress[23] + progress[24]);
+		    	return true;
+    		} else if (args[0].equalsIgnoreCase("add")) {
+    			if (Files.exists(path)) {
+    	    		getLogger().info("Already in registry");
+    	    		return false;
+    			}
+    			createNewSave(bPlayer);
+    	        getLogger().info("Successfully added player!");
+    	        return true;
+	    	} else {
+	    		getLogger().info("Please add player to registry");
+	    		return false; 
+	    	}
+    	}
+    	return false;
+    }
+    
+    @EventHandler
+    public void finishAdvancement(PlayerAdvancementDoneEvent event) {
+
+    	Player target = event.getPlayer();
+    	Advancement targetAdv = event.getAdvancement();
+    	AdvancementProgress avp = target.getAdvancementProgress(targetAdv);
+    	String location = "/Users/milesacq/server164vanilla/plugins/bingoSaves/" + target.getName() + ".txt";
+        Path path = Paths.get(location);
+    	if (Files.exists(path)) {
+    		if ((targetAdv.getKey().toString().charAt(10) == 'r')) {
+    			return;
+    		} else if (avp != null && avp.isDone() && containsAdvancement(targetAdv)) {
+    			int achIndex = 1000;
+    			for (int i = 0; i < this.gameAdvancements.length; i++) {
+    				if (this.gameAdvancements[i] == targetAdv) {
+    					achIndex = i;
+        				break;
+    				}
+    			}
+    			getLogger().info(achIndex + " index num");
+    			try {
+    				String fileContent = Files.readString(path);
+    				fileContent = fileContent.substring(0, achIndex) + 't' + fileContent.substring(achIndex + 1); 
+    				FileWriter myWriter = new FileWriter(location);
+    				myWriter.write(fileContent);
+    				myWriter.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    		} else {
+    			getLogger().info("incompatable advancement");
+    		}
+		} else {
+		    getLogger().info("player isnt registered");
+		}
+    }
+    
+    public Boolean containsAdvancement(Advancement advancement) {
+    	for (int i = 0; i < this.gameAdvancements.length; i++) {
+    		if ( this.gameAdvancements[i] == advancement) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    public void createNewSave(BingoPlayer player) {
+    	String name = "/Users/milesacq/server164vanilla/plugins/bingoSaves/" + player.getPlayerName() + ".txt";
+		Path path = Paths.get(name);
+		  if (!Files.exists(path)) {
+			File myObj = new File(name);
+			try {
+				myObj.createNewFile();
+				System.out.println("File created: " + myObj.getName());
+				FileWriter myWriter = new FileWriter(name);
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		  } else {
+		    System.out.println("File already exists.");
+		  }
+    }
+}
