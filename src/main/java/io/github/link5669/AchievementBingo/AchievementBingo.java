@@ -159,12 +159,11 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     			getLogger().info(achIndex + " index num");
     			try {
     				String fileContent = Files.readString(path);
-    				fileContent = fileContent.substring(0,25);
     				fileContent = fileContent.substring(0, achIndex) + 't' + fileContent.substring(achIndex + 1); 
     				FileWriter myWriter = new FileWriter(location);
     				myWriter.write(fileContent);
     				myWriter.close();
-//    				checkTrack(bPlayer);
+    				checkTrack(bPlayer); 
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -199,7 +198,7 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 			    myWriter.write("fffff");
 			    myWriter.write("fffff");
 			    myWriter.write("fffff");
-			    myWriter.write("                        ");
+			    myWriter.write("////////////////////////");
 			    myWriter.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -212,33 +211,31 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     public int checkTrack(BingoPlayer player) {
     	String name = player.getFileName();
 		Path path = Paths.get(name);
-		String trueTrack = "ttttt";
     	try {
+    		String fileContent = Files.readString(path);
     		FileWriter myWriter = new FileWriter(name);
-			String fileContent = Files.readString(path);
-			int p = 0;
-			if (fileContent.substring(0,5) == trueTrack) {
+			String trueTrack = "ttttt";
+			if (fileContent.substring(0,5).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2); 
 			    myWriter.write(fileContent);
 			}
-			if (fileContent.substring(5,10) == trueTrack) {
+			if (fileContent.substring(5,10).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 27) + "ET" + fileContent.substring(27 + 2); 
-			    myWriter.write(fileContent);
+			    myWriter.write(fileContent); 
 			}
-			if (fileContent.substring(10,15) == trueTrack) {
+			if (fileContent.substring(10,15).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 29) + "OT" + fileContent.substring(29 + 2); 
 			    myWriter.write(fileContent);
 			}
-			if (fileContent.substring(15,20) == trueTrack) {
+			if (fileContent.substring(15,20).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 31) + "SS" + fileContent.substring(31 + 2); 
 			    myWriter.write(fileContent);
 			}
-			if (fileContent.substring(20,25) == trueTrack) {
+			if (fileContent.substring(20,25).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 33) + "OV" + fileContent.substring(33 + 2); 
 			}
 			myWriter.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 1;
