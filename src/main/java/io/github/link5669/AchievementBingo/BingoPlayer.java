@@ -3,12 +3,13 @@ package io.github.link5669.AchievementBingo;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.bukkit.entity.Player;
 
 public class BingoPlayer {
 	private Player player;
-	private Boolean[] achievementsFinished = new Boolean[24];
+	private Boolean[] achievementsFinished = new Boolean[25];
 	
 	public void setPlayerName(Player p) {
 		this.player = p;
@@ -22,8 +23,13 @@ public class BingoPlayer {
 	}
 	
 	public String getPlayerName() {
-		return player.getName();
+		return this.player.getName();
 	}
+	
+	public String getFileName() {
+    	String name = "/Users/milesacq/server164vanilla/plugins/bingoSaves/" + this.getPlayerName() + ".txt";
+    	return name;
+    }
 	
 	public String[] getAchievementProgress(Path path) {
 		try {
@@ -36,7 +42,7 @@ public class BingoPlayer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String[] stringArray = new String[24];
+		String[] stringArray = new String[25];
 		for (int i = 0; i < stringArray.length; i++) {
 			if (achievementsFinished[i] == false) {
 				stringArray[i] = "[x]";

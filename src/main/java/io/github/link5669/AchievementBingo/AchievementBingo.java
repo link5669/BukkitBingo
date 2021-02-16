@@ -25,7 +25,7 @@ import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
 public final class AchievementBingo extends JavaPlugin implements Listener, CommandExecutor {
 //	private List<BingoPlayer> bingoNameList = new ArrayList<BingoPlayer>();
-	private Advancement[] gameAdvancements = new Advancement[24];
+	private Advancement[] gameAdvancements = new Advancement[25];
 	
 	@Override
     public void onEnable() {
@@ -70,6 +70,20 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
                 this.gameAdvancements[16] = adv;
     		case "minecraft:husbandry/bee_our_guest":
                 this.gameAdvancements[17] = adv;
+    		case "minecraft:safely_harvest_honey":
+    			this.gameAdvancements[18] = adv;
+    		case "minecraft:end/kill_dragon":
+    			this.gameAdvancements[19] = adv;
+    		case "minecraft:story/deflect_arrow":
+    			this.gameAdvancements[20] = adv;
+    		case "minecraft:husbandry/breed_an_animal":
+    			this.gameAdvancements[21] = adv;
+    		case "minecraft:husbandry/tame_an_animal":
+    			this.gameAdvancements[22] = adv;
+    		case "minecraft:husbandry/tactical_fishing":
+    			this.gameAdvancements[23] = adv;
+    		case "minecraft:end/root":
+    			this.gameAdvancements[24] = adv;
             }
         }
         String location = "/Users/milesacq/server164vanilla/plugins/bingoSaves";
@@ -82,7 +96,6 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 	            e.printStackTrace();
 	         }
         }
-//        getLogger().info(this.gameAdvancements[15].getKey().toString());
 		getServer().getPluginManager().registerEvents(this, this);
     }
     
@@ -93,12 +106,11 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    	
     	if (cmd.getName().equalsIgnoreCase("bingo") && args.length == 2) {
     		Player target = Bukkit.getPlayer(args[1]);
     		BingoPlayer bPlayer = new BingoPlayer();
     		bPlayer.setPlayerName(target);
-    		String location = "/Users/milesacq/server164vanilla/plugins/bingoSaves/" + bPlayer.getPlayerName() + ".txt";
+    		String location = bPlayer.getFileName();
             Path path = Paths.get(location);
     		if (target == null) {
 	        	getLogger().info(args[1] + " is not currently online.");
@@ -134,7 +146,9 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     	Player target = event.getPlayer();
     	Advancement targetAdv = event.getAdvancement();
     	AdvancementProgress avp = target.getAdvancementProgress(targetAdv);
-    	String location = "/Users/milesacq/server164vanilla/plugins/bingoSaves/" + target.getName() + ".txt";
+    	BingoPlayer bPlayer = new BingoPlayer();
+		bPlayer.setPlayerName(target);
+    	String location = bPlayer.getFileName();
         Path path = Paths.get(location);
     	if (Files.exists(path)) {
     		if ((targetAdv.getKey().toString().charAt(10) == 'r')) {
@@ -175,7 +189,7 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     }
     
     public void createNewSave(BingoPlayer player) {
-    	String name = "/Users/milesacq/server164vanilla/plugins/bingoSaves/" + player.getPlayerName() + ".txt";
+    	String name = player.getFileName();
 		Path path = Paths.get(name);
 		  if (!Files.exists(path)) {
 			File myObj = new File(name);
@@ -195,5 +209,17 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 		  } else {
 		    System.out.println("File already exists.");
 		  }
+    }
+	
+    public int checkTrack(BingoPlayer player) {
+    	String name = player.getFileName();
+		Path path = Paths.get(name);
+    	try {
+			String fileContent = Files.readString(path);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 1;
     }
 }
