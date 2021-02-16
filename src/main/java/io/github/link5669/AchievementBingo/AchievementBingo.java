@@ -1,6 +1,5 @@
 package io.github.link5669.AchievementBingo;
 
-import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
@@ -18,9 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
 public final class AchievementBingo extends JavaPlugin implements Listener, CommandExecutor {
@@ -142,7 +138,6 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     
     @EventHandler
     public void finishAdvancement(PlayerAdvancementDoneEvent event) {
-
     	Player target = event.getPlayer();
     	Advancement targetAdv = event.getAdvancement();
     	AdvancementProgress avp = target.getAdvancementProgress(targetAdv);
@@ -164,10 +159,12 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     			getLogger().info(achIndex + " index num");
     			try {
     				String fileContent = Files.readString(path);
+    				fileContent = fileContent.substring(0,25);
     				fileContent = fileContent.substring(0, achIndex) + 't' + fileContent.substring(achIndex + 1); 
     				FileWriter myWriter = new FileWriter(location);
     				myWriter.write(fileContent);
     				myWriter.close();
+//    				checkTrack(bPlayer);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -202,6 +199,7 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 			    myWriter.write("fffff");
 			    myWriter.write("fffff");
 			    myWriter.write("fffff");
+			    myWriter.write("                        ");
 			    myWriter.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -214,8 +212,31 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     public int checkTrack(BingoPlayer player) {
     	String name = player.getFileName();
 		Path path = Paths.get(name);
+		String trueTrack = "ttttt";
     	try {
+    		FileWriter myWriter = new FileWriter(name);
 			String fileContent = Files.readString(path);
+			int p = 0;
+			if (fileContent.substring(0,5) == trueTrack) {
+				fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2); 
+			    myWriter.write(fileContent);
+			}
+			if (fileContent.substring(5,10) == trueTrack) {
+				fileContent = fileContent.substring(0, 27) + "ET" + fileContent.substring(27 + 2); 
+			    myWriter.write(fileContent);
+			}
+			if (fileContent.substring(10,15) == trueTrack) {
+				fileContent = fileContent.substring(0, 29) + "OT" + fileContent.substring(29 + 2); 
+			    myWriter.write(fileContent);
+			}
+			if (fileContent.substring(15,20) == trueTrack) {
+				fileContent = fileContent.substring(0, 31) + "SS" + fileContent.substring(31 + 2); 
+			    myWriter.write(fileContent);
+			}
+			if (fileContent.substring(20,25) == trueTrack) {
+				fileContent = fileContent.substring(0, 33) + "OV" + fileContent.substring(33 + 2); 
+			}
+			myWriter.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
