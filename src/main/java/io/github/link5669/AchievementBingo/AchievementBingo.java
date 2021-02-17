@@ -102,6 +102,9 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    	for (int i = 0; i < this.gameAdvancements.length; i++) {
+    		getLogger().info(this.gameAdvancements[i].getKey().toString());
+    	}
     	if (cmd.getName().equalsIgnoreCase("bingo") && args.length == 2) {
     		Player target = Bukkit.getPlayer(args[1]);
     		BingoPlayer bPlayer = new BingoPlayer();
@@ -208,11 +211,12 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 		  }
     }
 	
-    public int checkTrack(BingoPlayer player) {
+    public void checkTrack(BingoPlayer player) {
     	String name = player.getFileName();
 		Path path = Paths.get(name);
     	try {
     		String fileContent = Files.readString(path);
+    		char pre = fileContent.charAt(0);
     		FileWriter myWriter = new FileWriter(name);
 			String trueTrack = "ttttt";
 			if (fileContent.substring(0,5).equals(trueTrack)) {
@@ -234,10 +238,49 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 			if (fileContent.substring(20,25).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 33) + "OV" + fileContent.substring(33 + 2); 
 			}
+			for (int i = 0; i <= 24; i+=5) {
+				if (pre == fileContent.charAt(i)) {
+					pre = fileContent.charAt(i);
+					if (i == 20) {
+						fileContent = fileContent.substring(0, 37) + "PT" + fileContent.substring(37 + 2);
+					}
+				}
+			}
+			for (int i = 1; i <= 24; i+=5) {
+				if (pre == fileContent.charAt(i)) {
+					pre = fileContent.charAt(i);
+					if (i == 21) {
+						fileContent = fileContent.substring(0, 41) + "VT" + fileContent.substring(41 + 2);
+					}
+				}
+			}
+			for (int i = 2; i <= 24; i+=5) {
+				if (pre == fileContent.charAt(i)) {
+					pre = fileContent.charAt(i);
+					if (i == 22) {
+						fileContent = fileContent.substring(0, 43) + "MO" + fileContent.substring(43 + 2);
+					}
+				}
+			}
+			for (int i = 3; i <= 24; i+=5) {
+				if (pre == fileContent.charAt(i)) {
+					pre = fileContent.charAt(i);
+					if (i == 23) {
+						fileContent = fileContent.substring(0, 45) + "MT" + fileContent.substring(45 + 2);
+					}
+				}
+			}
+			for (int i = 4; i <= 24; i+=5) {
+				if (pre == fileContent.charAt(i)) {
+					pre = fileContent.charAt(i);
+					if (i == 24) {
+						fileContent = fileContent.substring(0, 47) + "EN" + fileContent.substring(47 + 2);
+					}
+				}
+			}
 			myWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return 1;
     }
 }
