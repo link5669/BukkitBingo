@@ -38,7 +38,6 @@ public class BingoPlayer {
 	public String[] getAchievementProgress(Path path) {
 		try {
 			String fileContent = Files.readString(path);
-//			fileContent = fileContent.substring(0,25);
 			for (int i = 0; i < fileContent.length(); i++) {
 				if (fileContent.charAt(i) == 't') {
 					achievementsFinished[i] = true;

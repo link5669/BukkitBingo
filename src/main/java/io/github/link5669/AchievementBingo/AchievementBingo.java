@@ -101,9 +101,9 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    	for (int i = 0; i < this.gameAdvancements.length; i++) {
-    		getLogger().info(this.gameAdvancements[i].getKey().toString());
-    	}
+//    	for (int i = 0; i < this.gameAdvancements.length; i++) {
+//    		getLogger().info(this.gameAdvancements[i].getKey().toString());
+//    	}
     	if (cmd.getName().equalsIgnoreCase("bingo") && args.length == 2) {
     		BingoPlayer bPlayer = new BingoPlayer();
     		bPlayer.setPlayerName(Bukkit.getPlayer(args[1]));
@@ -120,6 +120,21 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     			bPlayer.getPlayer().sendMessage(progress[10] +  progress[11] + progress[12] + progress[13] + progress[14]);
     			bPlayer.getPlayer().sendMessage(progress[15] +  progress[16] + progress[17] + progress[18] + progress[19]);
     			bPlayer.getPlayer().sendMessage(progress[20] +  progress[21] + progress[22] + progress[23] + progress[24]);
+    			String fileContent;
+				try {
+					fileContent = Files.readString(path);
+					if (fileContent.substring(49,52).equals("---")) {
+						bPlayer.getPlayer().sendMessage("Points: " + 0);
+    				} else if (fileContent.substring(51,52).equals("-")) {
+    					int points = Integer.parseInt(fileContent.substring(49, 51));
+    					bPlayer.getPlayer().sendMessage("Points: " + points);
+    				} else {
+	    				int points = Integer.parseInt(fileContent.substring(49, 52));
+	    				bPlayer.getPlayer().sendMessage("Points: " + points);
+    				}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		    	return true;
     		} else if (args[0].equalsIgnoreCase("add")) {
     			if (Files.exists(path)) {
@@ -158,11 +173,26 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     			}
     			try {
     				String fileContent = Files.readString(path);
-    				fileContent = fileContent.substring(0, achIndex) + 't' + fileContent.substring(achIndex + 1); 
     				FileWriter myWriter = new FileWriter(location);
+    				if (fileContent.substring(49,52).equals("---")) {
+    					int points = 10;
+    					getLogger().info("a" + points);
+    					fileContent = fileContent.substring(0, 49) + points + "-" + fileContent.substring(50); 
+    				} else if (fileContent.substring(51,52).equals("-")) {
+    					int points = Integer.parseInt(fileContent.substring(49, 51));
+    					points = points + 10;
+    					getLogger().info("b" + points);
+        				fileContent = fileContent.substring(0, 49) + points + "-" + fileContent.substring(50); 
+    				} else {
+	    				int points = Integer.parseInt(fileContent.substring(49, 52));
+	    				points = points + 10;
+	    				getLogger().info("c" + points);
+	    				fileContent = fileContent.substring(0, 49) + points + fileContent.substring(50); 
+    				}
+    				fileContent = fileContent.substring(0, achIndex) + 't' + fileContent.substring(achIndex + 1);
     				myWriter.write(fileContent);
     				myWriter.close();
-    				checkTrack(bPlayer); 
+    				checkTrack(bPlayer);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -192,12 +222,12 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 				myObj.createNewFile();
 				getLogger().info("File created: " + myObj.getName());
 				FileWriter myWriter = new FileWriter(name);
-			    myWriter.write("ttttt");
-			    myWriter.write("ttttt");
-			    myWriter.write("ttttt");
-			    myWriter.write("ttttt");
-			    myWriter.write("ttttt");
-			    myWriter.write("////////////////////////");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.write("////////////////////////---");
 			    myWriter.flush();
 			    myWriter.close();
 			} catch (IOException e) {
@@ -252,6 +282,10 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 				char j = var.getString().charAt(i);
 				var.setChar(j);
 				if (i == c) {
+					getLogger().info(i + c + var.getString());
+					int points = Integer.parseInt(var.getString().substring(49,52));
+    				points = points + 10;
+    				var.setString(var.getString().substring(0, 49) + points + var.getString().substring(49 + 1));
 					var.setString(var.getString().substring(0, b) + code + var.getString().substring(b + 2));
 				}
 			}
