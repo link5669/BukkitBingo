@@ -28,7 +28,6 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 		while(iter.hasNext()) {
             Advancement adv = iter.next();
             String caseKey = adv.getKey().toString();
-            getLogger().info(caseKey);
             switch (caseKey) {
             case "minecraft:story/form_obsidian":
                 this.gameAdvancements[0] = adv;
@@ -97,7 +96,7 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     
     @Override
     public void onDisable() {
-    	getLogger().info("onDisable has been invoked!");
+    	getLogger().info("Closing AchievementBingo");
     }
     
     @Override
@@ -157,7 +156,6 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
         				break;
     				}
     			}
-    			getLogger().info(achIndex + " index num");
     			try {
     				String fileContent = Files.readString(path);
     				fileContent = fileContent.substring(0, achIndex) + 't' + fileContent.substring(achIndex + 1); 
@@ -192,13 +190,13 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 			File myObj = new File(name);
 			try {
 				myObj.createNewFile();
-				System.out.println("File created: " + myObj.getName());
+				getLogger().info("File created: " + myObj.getName());
 				FileWriter myWriter = new FileWriter(name);
 			    myWriter.write("ttttt");
-			    myWriter.write("tffff");
-			    myWriter.write("tffff");
-			    myWriter.write("tffff");
-			    myWriter.write("tffff");
+			    myWriter.write("ttttt");
+			    myWriter.write("ttttt");
+			    myWriter.write("ttttt");
+			    myWriter.write("ttttt");
 			    myWriter.write("////////////////////////");
 			    myWriter.flush();
 			    myWriter.close();
@@ -215,59 +213,49 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 		Path path = Paths.get(name);
     	try {
     		String fileContent = Files.readString(path);
-    		char pre = fileContent.charAt(0);
+    		PreContent var = new PreContent();
+			var.setChar(fileContent.charAt(0));
     		FileWriter myWriter = new FileWriter(name);
 			String trueTrack = "ttttt";
 			if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
 				fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
-			    myWriter.write(fileContent);
-			    getLogger().info("a");
 			}
 			if (fileContent.substring(5,10).equals(trueTrack) && !(fileContent.substring(27,29).equals("ET"))) {
 				fileContent = fileContent.substring(0, 27) + "ET" + fileContent.substring(27 + 2); 
-			    myWriter.write(fileContent); 
 			}
 			if (fileContent.substring(10,15).equals(trueTrack) && !(fileContent.substring(29,31).equals("OT"))) {
 				fileContent = fileContent.substring(0, 29) + "OT" + fileContent.substring(29 + 2); 
-			    myWriter.write(fileContent);
 			}
 			if (fileContent.substring(15,20).equals(trueTrack) && !(fileContent.substring(31,33).equals("SS"))) {
 				fileContent = fileContent.substring(0, 31) + "SS" + fileContent.substring(31 + 2); 
-			    myWriter.write(fileContent);
 			}
 			if (fileContent.substring(20,25).equals(trueTrack) && !(fileContent.substring(33,35).equals("OV"))) {
 				fileContent = fileContent.substring(0, 33) + "OV" + fileContent.substring(33 + 2); 
-				myWriter.write(fileContent);
 			}
-			getLogger().info(fileContent);
-			pre = checkColumn(0, 35, 20, pre, fileContent, "PT", myWriter);
-			getLogger().info(fileContent);
-			pre = checkColumn(1, 37, 21, pre, fileContent, "VT", myWriter);
-			pre = checkColumn(2, 39, 22, pre, fileContent, "MO", myWriter);
-			pre = checkColumn(3, 41, 23, pre, fileContent, "MT", myWriter);
-			pre = checkColumn(4, 43, 24, pre, fileContent, "EN", myWriter);
-//			myWriter.write(fileContent);
+			var.setString(fileContent);
+			var = checkColumn(0, 35, 20, var, "PT", myWriter);
+			var = checkColumn(1, 37, 21, var, "VT", myWriter);
+			var = checkColumn(2, 39, 22, var, "MO", myWriter);
+			var = checkColumn(3, 41, 23, var, "MT", myWriter);
+			var = checkColumn(4, 43, 24, var, "EN", myWriter);
+			myWriter.write(var.getString());
 			myWriter.flush();
 			myWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
-    private char checkColumn(int a, int b, int c, char pre, String fileContent, String code, FileWriter myWriter) {
+    } 
+    
+    private PreContent checkColumn(int a, int b, int c, PreContent var, String code, FileWriter myWriter) {
     	for (int i = a; i <= 24; i+=5) {
-			if (pre == fileContent.charAt(i) && pre == 't' && !(fileContent.substring(b,b+2).equals(code))) {
-				pre = fileContent.charAt(i);
+			if (var.getChar() == var.getString().charAt(i) && var.getChar() == 't' && !(var.getString().substring(b,b+2).equals(code))) {
+				char j = var.getString().charAt(i);
+				var.setChar(j);
 				if (i == c) {
-					fileContent = fileContent.substring(0, b) + code + fileContent.substring(b + 2);
-					try {
-						getLogger().info(a + ".");
-						myWriter.write(fileContent);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					var.setString(var.getString().substring(0, b) + code + var.getString().substring(b + 2));
 				}
 			}
-		}
-    	return pre;
+    	}
+    	return var;
     }
 }
