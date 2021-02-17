@@ -243,39 +243,11 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     		PreContent var = new PreContent();
 			var.setChar(fileContent.charAt(0));
     		FileWriter myWriter = new FileWriter(name);
-			String trueTrack = "ttttt";
-			if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
-				fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
-				checkPointLengthHorizontal(fileContent);
-			}
-			if (fileContent.substring(5,10).equals(trueTrack) && !(fileContent.substring(27,29).equals("ET"))) {
-				fileContent = fileContent.substring(0, 27) + "ET" + fileContent.substring(27 + 2); 
-				if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
-					fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
-					checkPointLengthHorizontal(fileContent);
-				}
-			}
-			if (fileContent.substring(10,15).equals(trueTrack) && !(fileContent.substring(29,31).equals("OT"))) {
-				fileContent = fileContent.substring(0, 29) + "OT" + fileContent.substring(29 + 2); 
-				if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
-					fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
-					checkPointLengthHorizontal(fileContent);
-				}
-			}
-			if (fileContent.substring(15,20).equals(trueTrack) && !(fileContent.substring(31,33).equals("SS"))) {
-				fileContent = fileContent.substring(0, 31) + "SS" + fileContent.substring(31 + 2); 
-				if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
-					fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
-					checkPointLengthHorizontal(fileContent);
-				}
-			}
-			if (fileContent.substring(20,25).equals(trueTrack) && !(fileContent.substring(33,35).equals("OV"))) {
-				fileContent = fileContent.substring(0, 33) + "OV" + fileContent.substring(33 + 2); 
-				if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
-					fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
-					checkPointLengthHorizontal(fileContent);
-				}
-			}
+			checkRow(25, 0, "NT", fileContent);
+			checkRow(27, 5, "ET", fileContent);
+			checkRow(29, 10, "OT", fileContent);
+			checkRow(31, 15, "SS", fileContent);
+			checkRow(33, 20, "OV", fileContent);
 			var.setString(fileContent);
 			var = checkColumn(0, 35, 20, var, "PT", myWriter);
 			var = checkColumn(1, 37, 21, var, "VT", myWriter);
@@ -311,6 +283,14 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 			}
     	}
     	return var;
+    }
+    
+    private String checkRow(int a, int c, String code, String fileContent) {
+    	if (fileContent.substring(c,c+5).equals("ttttt") && !(fileContent.substring(a,a+2).equals(code))) {
+			fileContent = fileContent.substring(0, a) + code + fileContent.substring(a + 2);
+			checkPointLengthHorizontal(fileContent);
+		}
+    	return fileContent;
     }
     
     private String checkPointLengthHorizontal(String fileContent) {
