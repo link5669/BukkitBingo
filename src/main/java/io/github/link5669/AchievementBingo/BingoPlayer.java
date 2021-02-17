@@ -1,5 +1,6 @@
 package io.github.link5669.AchievementBingo;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,9 +30,9 @@ public class BingoPlayer {
 	public Player getPlayer() {
 		return this.player;
 	}
-	
+
 	public String getFileName() {
-    	String name = "/Users/milesacq/server164vanilla/plugins/bingoSaves/" + this.getPlayerName() + ".txt";
+    	String name = "plugins" + File.separator + "bingoSaves/" + this.getPlayerName() + ".txt";
     	return name;
     }
 	

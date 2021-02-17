@@ -81,11 +81,11 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     			this.gameAdvancements[24] = adv;
             }
         }
-        String location = "/Users/milesacq/server164vanilla/plugins/bingoSaves";
+        String location = "plugins" + File.separator + "bingoSaves/";
         Path path = Paths.get(location);
         if (!Files.exists(path)) {
 	        try {
-	            File saveFile = new File("/Users/milesacq/server164vanilla/plugins/bingoSaves");
+	            File saveFile = new File("plugins" + File.separator + "bingoSaves/");
 	            saveFile.mkdir();
 	         } catch(Exception e) {
 	            e.printStackTrace();
@@ -101,9 +101,6 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-//    	for (int i = 0; i < this.gameAdvancements.length; i++) {
-//    		getLogger().info(this.gameAdvancements[i].getKey().toString());
-//    	}
     	if (cmd.getName().equalsIgnoreCase("bingo") && args.length == 2) {
     		BingoPlayer bPlayer = new BingoPlayer();
     		bPlayer.setPlayerName(Bukkit.getPlayer(args[1]));
@@ -138,13 +135,14 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 		    	return true;
     		} else if (args[0].equalsIgnoreCase("add")) {
     			if (Files.exists(path)) {
+    				bPlayer.getPlayer().sendMessage("Already in registry");
     	    		getLogger().info("Already in registry");
     	    		return false;
     			}
     			createNewSave(bPlayer);
-    	        getLogger().info("Successfully added player!");
     	        return true;
 	    	} else {
+	    		bPlayer.getPlayer().sendMessage("Please add player to registry");
 	    		getLogger().info("Please add player to registry");
 	    		return false; 
 	    	}
@@ -176,17 +174,14 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     				FileWriter myWriter = new FileWriter(location);
     				if (fileContent.substring(49,52).equals("---")) {
     					int points = 10;
-    					getLogger().info("a" + points);
     					fileContent = fileContent.substring(0, 49) + points + fileContent.substring(51); 
     				} else if (fileContent.substring(51,52).equals("-")) {
     					int points = Integer.parseInt(fileContent.substring(49, 51));
     					points +=10;
-    					getLogger().info("b" + points);
         				fileContent = fileContent.substring(0, 49) + points + fileContent.substring(51); 
     				} else {
 	    				int points = Integer.parseInt(fileContent.substring(49, 52));
 	    				points +=10;
-	    				getLogger().info("c" + points);
 	    				fileContent = fileContent.substring(0, 49) + points + fileContent.substring(50); 
     				}
     				fileContent = fileContent.substring(0, achIndex) + 't' + fileContent.substring(achIndex + 1);
@@ -222,14 +217,16 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 				myObj.createNewFile();
 				getLogger().info("File created: " + myObj.getName());
 				FileWriter myWriter = new FileWriter(name);
-			    myWriter.write("ttttt");
-			    myWriter.write("ttttt");
-			    myWriter.write("tffff");
-			    myWriter.write("tffff");
-			    myWriter.write("tffff");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
+			    myWriter.write("fffff");
 			    myWriter.write("////////////////////////---");
 			    myWriter.flush();
 			    myWriter.close();
+			    getLogger().info("Successfully added player!");
+    	        player.getPlayer().sendMessage("Sucessfully added player " + player.getPlayerName());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -249,22 +246,38 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 			String trueTrack = "ttttt";
 			if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
 				fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
+				checkPointLengthHorizontal(fileContent);
 			}
 			if (fileContent.substring(5,10).equals(trueTrack) && !(fileContent.substring(27,29).equals("ET"))) {
 				fileContent = fileContent.substring(0, 27) + "ET" + fileContent.substring(27 + 2); 
+				if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
+					fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
+					checkPointLengthHorizontal(fileContent);
+				}
 			}
 			if (fileContent.substring(10,15).equals(trueTrack) && !(fileContent.substring(29,31).equals("OT"))) {
 				fileContent = fileContent.substring(0, 29) + "OT" + fileContent.substring(29 + 2); 
+				if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
+					fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
+					checkPointLengthHorizontal(fileContent);
+				}
 			}
 			if (fileContent.substring(15,20).equals(trueTrack) && !(fileContent.substring(31,33).equals("SS"))) {
 				fileContent = fileContent.substring(0, 31) + "SS" + fileContent.substring(31 + 2); 
+				if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
+					fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
+					checkPointLengthHorizontal(fileContent);
+				}
 			}
 			if (fileContent.substring(20,25).equals(trueTrack) && !(fileContent.substring(33,35).equals("OV"))) {
 				fileContent = fileContent.substring(0, 33) + "OV" + fileContent.substring(33 + 2); 
+				if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
+					fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
+					checkPointLengthHorizontal(fileContent);
+				}
 			}
 			var.setString(fileContent);
 			var = checkColumn(0, 35, 20, var, "PT", myWriter);
-			
 			var = checkColumn(1, 37, 21, var, "VT", myWriter);
 			var = checkColumn(2, 39, 22, var, "MO", myWriter);
 			var = checkColumn(3, 41, 23, var, "MT", myWriter);
@@ -281,12 +294,9 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     	var.setChar(var.getString().charAt(a));
     	for (int i = a; i <= 24; i+=5) {
 			if ((var.getChar() == var.getString().charAt(i)) && (var.getChar() == 't') && !(var.getString().substring(b,b+2).equals(code))) {
-				getLogger().info(i + " " + c + var.getString() + "....." + var.getChar() + " " + var.getString().charAt(i));
 				char j = var.getString().charAt(i);
-				getLogger().info(j + " " + var.getString());
 				var.setChar(j);
 				if (i == c) {
-					getLogger().info(i + " " + c + var.getString() + "....." + var.getChar() + " " + var.getString().charAt(i));
 				    if (var.getString().substring(51,52).equals("-")) {
 						int points = Integer.parseInt(var.getString().substring(49, 51));
 						points +=20;
@@ -297,10 +307,22 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 	    				var.setString(var.getString().substring(0, 49) + points + var.getString().substring(50)); 
 					}
 					var.setString(var.getString().substring(0, b) + code + var.getString().substring(b + 2));
-					getLogger().info(i + " h" );
 				}
 			}
     	}
     	return var;
+    }
+    
+    private String checkPointLengthHorizontal(String fileContent) {
+    	if (fileContent.substring(51,52).equals("-")) {
+			int points = Integer.parseInt(fileContent.substring(49, 51));
+			points +=20;
+			fileContent = fileContent.substring(0, 49) + points + fileContent.substring(51); 
+	    } else {
+			int points = Integer.parseInt(fileContent.substring(49, 52));
+			points +=20;
+			fileContent = fileContent.substring(0, 49) + points + fileContent.substring(50); 
+		}
+    	return fileContent;
     }
 }
