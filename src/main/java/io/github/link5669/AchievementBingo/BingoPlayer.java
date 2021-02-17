@@ -26,6 +26,10 @@ public class BingoPlayer {
 		return this.player.getName();
 	}
 	
+	public Player getPlayer() {
+		return this.player;
+	}
+	
 	public String getFileName() {
     	String name = "/Users/milesacq/server164vanilla/plugins/bingoSaves/" + this.getPlayerName() + ".txt";
     	return name;

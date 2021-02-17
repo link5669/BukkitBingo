@@ -13,22 +13,22 @@ import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
 public final class AchievementBingo extends JavaPlugin implements Listener, CommandExecutor {
-//	private List<BingoPlayer> bingoNameList = new ArrayList<BingoPlayer>();
 	private Advancement[] gameAdvancements = new Advancement[25];
 	
 	@Override
     public void onEnable() {
 		getLogger().info("onEnable has been invoked! Building advancement list");
-        for (Iterator<Advancement> iter = Bukkit.getServer().advancementIterator(); iter.hasNext(); ) {
+		Iterator<Advancement> iter = Bukkit.getServer().advancementIterator();
+		while(iter.hasNext()) {
             Advancement adv = iter.next();
             String caseKey = adv.getKey().toString();
+            getLogger().info(caseKey);
             switch (caseKey) {
             case "minecraft:story/form_obsidian":
                 this.gameAdvancements[0] = adv;
@@ -106,22 +106,21 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     		getLogger().info(this.gameAdvancements[i].getKey().toString());
     	}
     	if (cmd.getName().equalsIgnoreCase("bingo") && args.length == 2) {
-    		Player target = Bukkit.getPlayer(args[1]);
     		BingoPlayer bPlayer = new BingoPlayer();
-    		bPlayer.setPlayerName(target);
+    		bPlayer.setPlayerName(Bukkit.getPlayer(args[1]));
     		String location = bPlayer.getFileName();
             Path path = Paths.get(location);
-    		if (target == null) {
+    		if (bPlayer.getPlayer() == null) {
 	        	getLogger().info(args[1] + " is not currently online.");
 	        	return false;
     		}
     		if ((Files.exists(path)) && args[0].equalsIgnoreCase("check")) {
 		    	String[] progress = bPlayer.getAchievementProgress(path);
-    			target.sendMessage(progress[0] +  progress[1] + progress[2] + progress[3] + progress[4]);
-    			target.sendMessage(progress[5] +  progress[6] + progress[7] + progress[8] + progress[9]);
-    			target.sendMessage(progress[10] +  progress[11] + progress[12] + progress[13] + progress[14]);
-    			target.sendMessage(progress[15] +  progress[16] + progress[17] + progress[18] + progress[19]);
-    			target.sendMessage(progress[20] +  progress[21] + progress[22] + progress[23] + progress[24]);
+    			bPlayer.getPlayer().sendMessage(progress[0] +  progress[1] + progress[2] + progress[3] + progress[4]);
+    			bPlayer.getPlayer().sendMessage(progress[5] +  progress[6] + progress[7] + progress[8] + progress[9]);
+    			bPlayer.getPlayer().sendMessage(progress[10] +  progress[11] + progress[12] + progress[13] + progress[14]);
+    			bPlayer.getPlayer().sendMessage(progress[15] +  progress[16] + progress[17] + progress[18] + progress[19]);
+    			bPlayer.getPlayer().sendMessage(progress[20] +  progress[21] + progress[22] + progress[23] + progress[24]);
 		    	return true;
     		} else if (args[0].equalsIgnoreCase("add")) {
     			if (Files.exists(path)) {
@@ -141,11 +140,10 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     
     @EventHandler
     public void finishAdvancement(PlayerAdvancementDoneEvent event) {
-    	Player target = event.getPlayer();
     	Advancement targetAdv = event.getAdvancement();
-    	AdvancementProgress avp = target.getAdvancementProgress(targetAdv);
+    	AdvancementProgress avp = event.getPlayer().getAdvancementProgress(targetAdv);
     	BingoPlayer bPlayer = new BingoPlayer();
-		bPlayer.setPlayerName(target);
+		bPlayer.setPlayerName(event.getPlayer());
     	String location = bPlayer.getFileName();
         Path path = Paths.get(location);
     	if (Files.exists(path)) {
@@ -163,7 +161,6 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     			try {
     				String fileContent = Files.readString(path);
     				fileContent = fileContent.substring(0, achIndex) + 't' + fileContent.substring(achIndex + 1); 
-    				fileContent = fileContent.substring(0, 49) + 't' + fileContent.substring(49 + 1); 
     				FileWriter myWriter = new FileWriter(location);
     				myWriter.write(fileContent);
     				myWriter.close();
@@ -197,12 +194,13 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 				myObj.createNewFile();
 				System.out.println("File created: " + myObj.getName());
 				FileWriter myWriter = new FileWriter(name);
-			    myWriter.write("fffff");
-			    myWriter.write("fffff");
-			    myWriter.write("fffff");
-			    myWriter.write("fffff");
-			    myWriter.write("fffff");
-			    myWriter.write("////////////////////////000");
+			    myWriter.write("ttttt");
+			    myWriter.write("tffff");
+			    myWriter.write("tffff");
+			    myWriter.write("tffff");
+			    myWriter.write("tffff");
+			    myWriter.write("////////////////////////");
+			    myWriter.flush();
 			    myWriter.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -220,79 +218,56 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     		char pre = fileContent.charAt(0);
     		FileWriter myWriter = new FileWriter(name);
 			String trueTrack = "ttttt";
-			if (fileContent.substring(0,5).equals(trueTrack)) {
-				fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2); 
+			if (fileContent.substring(0,5).equals(trueTrack) && !(fileContent.substring(25,27).equals("NT"))) {
+				fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2);
 			    myWriter.write(fileContent);
-			    fileContent = Files.readString(path);
+			    getLogger().info("a");
 			}
-			if (fileContent.substring(5,10).equals(trueTrack)) {
+			if (fileContent.substring(5,10).equals(trueTrack) && !(fileContent.substring(27,29).equals("ET"))) {
 				fileContent = fileContent.substring(0, 27) + "ET" + fileContent.substring(27 + 2); 
 			    myWriter.write(fileContent); 
-			    fileContent = Files.readString(path);
 			}
-			if (fileContent.substring(10,15).equals(trueTrack)) {
+			if (fileContent.substring(10,15).equals(trueTrack) && !(fileContent.substring(29,31).equals("OT"))) {
 				fileContent = fileContent.substring(0, 29) + "OT" + fileContent.substring(29 + 2); 
 			    myWriter.write(fileContent);
-			    fileContent = Files.readString(path);
 			}
-			if (fileContent.substring(15,20).equals(trueTrack)) {
+			if (fileContent.substring(15,20).equals(trueTrack) && !(fileContent.substring(31,33).equals("SS"))) {
 				fileContent = fileContent.substring(0, 31) + "SS" + fileContent.substring(31 + 2); 
 			    myWriter.write(fileContent);
-			    fileContent = Files.readString(path);
 			}
-			if (fileContent.substring(20,25).equals(trueTrack)) {
+			if (fileContent.substring(20,25).equals(trueTrack) && !(fileContent.substring(33,35).equals("OV"))) {
 				fileContent = fileContent.substring(0, 33) + "OV" + fileContent.substring(33 + 2); 
 				myWriter.write(fileContent);
-				fileContent = Files.readString(path);
 			}
-			for (int i = 0; i <= 24; i+=5) {
-				if (pre == fileContent.charAt(i)) {
-					pre = fileContent.charAt(i);
-					if (i == 20) {
-						fileContent = fileContent.substring(0, 35) + "PT" + fileContent.substring(35 + 2);
-						myWriter.write(fileContent);
-					}
-				}
-			}
-			for (int i = 1; i <= 24; i+=5) {
-				if (pre == fileContent.charAt(i)) {
-					pre = fileContent.charAt(i);
-					if (i == 21) {
-						fileContent = fileContent.substring(0, 37) + "VT" + fileContent.substring(37 + 2);
-						myWriter.write(fileContent);
-					}
-				}
-			}
-			for (int i = 2; i <= 24; i+=5) {
-				if (pre == fileContent.charAt(i)) {
-					pre = fileContent.charAt(i);
-					if (i == 22) {
-						fileContent = fileContent.substring(0, 39) + "MO" + fileContent.substring(39 + 2);
-						myWriter.write(fileContent);
-					}
-				}
-			}
-			for (int i = 3; i <= 24; i+=5) {
-				if (pre == fileContent.charAt(i)) {
-					pre = fileContent.charAt(i);
-					if (i == 23) {
-						fileContent = fileContent.substring(0, 41) + "MT" + fileContent.substring(41 + 2);
-						myWriter.write(fileContent);
-					}
-				}
-			}
-			for (int i = 4; i <= 24; i+=5) {
-				if (pre == fileContent.charAt(i)) {
-					pre = fileContent.charAt(i);
-					if (i == 24) {
-						fileContent = fileContent.substring(0, 43) + "EN" + fileContent.substring(43 + 2);
-						myWriter.write(fileContent);
-					}
-				}
-			}
+			getLogger().info(fileContent);
+			pre = checkColumn(0, 35, 20, pre, fileContent, "PT", myWriter);
+			getLogger().info(fileContent);
+			pre = checkColumn(1, 37, 21, pre, fileContent, "VT", myWriter);
+			pre = checkColumn(2, 39, 22, pre, fileContent, "MO", myWriter);
+			pre = checkColumn(3, 41, 23, pre, fileContent, "MT", myWriter);
+			pre = checkColumn(4, 43, 24, pre, fileContent, "EN", myWriter);
+//			myWriter.write(fileContent);
+			myWriter.flush();
 			myWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    }
+    private char checkColumn(int a, int b, int c, char pre, String fileContent, String code, FileWriter myWriter) {
+    	for (int i = a; i <= 24; i+=5) {
+			if (pre == fileContent.charAt(i) && pre == 't' && !(fileContent.substring(b,b+2).equals(code))) {
+				pre = fileContent.charAt(i);
+				if (i == c) {
+					fileContent = fileContent.substring(0, b) + code + fileContent.substring(b + 2);
+					try {
+						getLogger().info(a + ".");
+						myWriter.write(fileContent);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+    	return pre;
     }
 }
