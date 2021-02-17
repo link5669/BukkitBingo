@@ -163,6 +163,7 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     			try {
     				String fileContent = Files.readString(path);
     				fileContent = fileContent.substring(0, achIndex) + 't' + fileContent.substring(achIndex + 1); 
+    				fileContent = fileContent.substring(0, 49) + 't' + fileContent.substring(49 + 1); 
     				FileWriter myWriter = new FileWriter(location);
     				myWriter.write(fileContent);
     				myWriter.close();
@@ -201,7 +202,7 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 			    myWriter.write("fffff");
 			    myWriter.write("fffff");
 			    myWriter.write("fffff");
-			    myWriter.write("////////////////////////");
+			    myWriter.write("////////////////////////000");
 			    myWriter.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -222,27 +223,34 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 			if (fileContent.substring(0,5).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 25) + "NT" + fileContent.substring(25 + 2); 
 			    myWriter.write(fileContent);
+			    fileContent = Files.readString(path);
 			}
 			if (fileContent.substring(5,10).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 27) + "ET" + fileContent.substring(27 + 2); 
 			    myWriter.write(fileContent); 
+			    fileContent = Files.readString(path);
 			}
 			if (fileContent.substring(10,15).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 29) + "OT" + fileContent.substring(29 + 2); 
 			    myWriter.write(fileContent);
+			    fileContent = Files.readString(path);
 			}
 			if (fileContent.substring(15,20).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 31) + "SS" + fileContent.substring(31 + 2); 
 			    myWriter.write(fileContent);
+			    fileContent = Files.readString(path);
 			}
 			if (fileContent.substring(20,25).equals(trueTrack)) {
 				fileContent = fileContent.substring(0, 33) + "OV" + fileContent.substring(33 + 2); 
+				myWriter.write(fileContent);
+				fileContent = Files.readString(path);
 			}
 			for (int i = 0; i <= 24; i+=5) {
 				if (pre == fileContent.charAt(i)) {
 					pre = fileContent.charAt(i);
 					if (i == 20) {
-						fileContent = fileContent.substring(0, 37) + "PT" + fileContent.substring(37 + 2);
+						fileContent = fileContent.substring(0, 35) + "PT" + fileContent.substring(35 + 2);
+						myWriter.write(fileContent);
 					}
 				}
 			}
@@ -250,7 +258,8 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 				if (pre == fileContent.charAt(i)) {
 					pre = fileContent.charAt(i);
 					if (i == 21) {
-						fileContent = fileContent.substring(0, 41) + "VT" + fileContent.substring(41 + 2);
+						fileContent = fileContent.substring(0, 37) + "VT" + fileContent.substring(37 + 2);
+						myWriter.write(fileContent);
 					}
 				}
 			}
@@ -258,7 +267,8 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 				if (pre == fileContent.charAt(i)) {
 					pre = fileContent.charAt(i);
 					if (i == 22) {
-						fileContent = fileContent.substring(0, 43) + "MO" + fileContent.substring(43 + 2);
+						fileContent = fileContent.substring(0, 39) + "MO" + fileContent.substring(39 + 2);
+						myWriter.write(fileContent);
 					}
 				}
 			}
@@ -266,7 +276,8 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 				if (pre == fileContent.charAt(i)) {
 					pre = fileContent.charAt(i);
 					if (i == 23) {
-						fileContent = fileContent.substring(0, 45) + "MT" + fileContent.substring(45 + 2);
+						fileContent = fileContent.substring(0, 41) + "MT" + fileContent.substring(41 + 2);
+						myWriter.write(fileContent);
 					}
 				}
 			}
@@ -274,7 +285,8 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 				if (pre == fileContent.charAt(i)) {
 					pre = fileContent.charAt(i);
 					if (i == 24) {
-						fileContent = fileContent.substring(0, 47) + "EN" + fileContent.substring(47 + 2);
+						fileContent = fileContent.substring(0, 43) + "EN" + fileContent.substring(43 + 2);
+						myWriter.write(fileContent);
 					}
 				}
 			}
