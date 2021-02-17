@@ -177,15 +177,15 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     				if (fileContent.substring(49,52).equals("---")) {
     					int points = 10;
     					getLogger().info("a" + points);
-    					fileContent = fileContent.substring(0, 49) + points + "-" + fileContent.substring(50); 
+    					fileContent = fileContent.substring(0, 49) + points + fileContent.substring(51); 
     				} else if (fileContent.substring(51,52).equals("-")) {
     					int points = Integer.parseInt(fileContent.substring(49, 51));
-    					points = points + 10;
+    					points +=10;
     					getLogger().info("b" + points);
-        				fileContent = fileContent.substring(0, 49) + points + "-" + fileContent.substring(50); 
+        				fileContent = fileContent.substring(0, 49) + points + fileContent.substring(51); 
     				} else {
 	    				int points = Integer.parseInt(fileContent.substring(49, 52));
-	    				points = points + 10;
+	    				points +=10;
 	    				getLogger().info("c" + points);
 	    				fileContent = fileContent.substring(0, 49) + points + fileContent.substring(50); 
     				}
@@ -222,11 +222,11 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 				myObj.createNewFile();
 				getLogger().info("File created: " + myObj.getName());
 				FileWriter myWriter = new FileWriter(name);
-			    myWriter.write("fffff");
-			    myWriter.write("fffff");
-			    myWriter.write("fffff");
-			    myWriter.write("fffff");
-			    myWriter.write("fffff");
+			    myWriter.write("ttttt");
+			    myWriter.write("ttttt");
+			    myWriter.write("tffff");
+			    myWriter.write("tffff");
+			    myWriter.write("tffff");
 			    myWriter.write("////////////////////////---");
 			    myWriter.flush();
 			    myWriter.close();
@@ -264,6 +264,7 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 			}
 			var.setString(fileContent);
 			var = checkColumn(0, 35, 20, var, "PT", myWriter);
+			
 			var = checkColumn(1, 37, 21, var, "VT", myWriter);
 			var = checkColumn(2, 39, 22, var, "MO", myWriter);
 			var = checkColumn(3, 41, 23, var, "MT", myWriter);
@@ -277,16 +278,26 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     } 
     
     private PreContent checkColumn(int a, int b, int c, PreContent var, String code, FileWriter myWriter) {
+    	var.setChar(var.getString().charAt(a));
     	for (int i = a; i <= 24; i+=5) {
-			if (var.getChar() == var.getString().charAt(i) && var.getChar() == 't' && !(var.getString().substring(b,b+2).equals(code))) {
+			if ((var.getChar() == var.getString().charAt(i)) && (var.getChar() == 't') && !(var.getString().substring(b,b+2).equals(code))) {
+				getLogger().info(i + " " + c + var.getString() + "....." + var.getChar() + " " + var.getString().charAt(i));
 				char j = var.getString().charAt(i);
+				getLogger().info(j + " " + var.getString());
 				var.setChar(j);
 				if (i == c) {
-					getLogger().info(i + c + var.getString());
-					int points = Integer.parseInt(var.getString().substring(49,52));
-    				points = points + 10;
-    				var.setString(var.getString().substring(0, 49) + points + var.getString().substring(49 + 1));
+					getLogger().info(i + " " + c + var.getString() + "....." + var.getChar() + " " + var.getString().charAt(i));
+				    if (var.getString().substring(51,52).equals("-")) {
+						int points = Integer.parseInt(var.getString().substring(49, 51));
+						points +=20;
+						var.setString(var.getString().substring(0, 49) + points + var.getString().substring(51)); 
+				    } else {
+	    				int points = Integer.parseInt(var.getString().substring(49, 52));
+	    				points +=20;
+	    				var.setString(var.getString().substring(0, 49) + points + var.getString().substring(50)); 
+					}
 					var.setString(var.getString().substring(0, b) + code + var.getString().substring(b + 2));
+					getLogger().info(i + " h" );
 				}
 			}
     	}
