@@ -29,56 +29,56 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
             Advancement adv = iter.next();
             String caseKey = adv.getKey().toString();
             switch (caseKey) {
-            case "minecraft:story/form_obsidian":
-                this.gameAdvancements[0] = adv;
-            case "minecraft:nether/brew_potion":
-                this.gameAdvancements[1] = adv;
-            case "minecraft:nether/distract_piglin":
-                this.gameAdvancements[2] = adv;
-            case "minecraft:nether/get_wither_skull":
-                this.gameAdvancements[3] = adv;
-    		case "minecraft:story/follow_ender_eye":
-                this.gameAdvancements[4] = adv;
-    		case "minecraft:adventure/ol_betsy":
-                this.gameAdvancements[5] = adv;
-    		case "minecraft:adventure/hero_of_the_village":
-                this.gameAdvancements[6] = adv;
-    		case "minecraft:nether/ride_strider":
-                this.gameAdvancements[7] = adv;
-    		case "minecraft:nether/obtain_blaze_rod":
-                this.gameAdvancements[8] = adv;
-    		case "minecraft:end/enter_end_gateway":
-                this.gameAdvancements[9] = adv;
-    		case "minecraft:story/enchant_item":
-                this.gameAdvancements[10] = adv;
-    		case "minecraft:adventure/trade":
-                this.gameAdvancements[11] = adv;
-    		case "minecraft:adventure/kill_a_mob":
-                this.gameAdvancements[12] = adv;
-    		case "minecraft:adventure/summon_iron_golem":
-                this.gameAdvancements[13] = adv;
-    		case "minecraft:story/shiny_gear":
-                this.gameAdvancements[14] = adv;
-    		case "minecraft:adventure/whos_the_pillager_now":
-                this.gameAdvancements[15] = adv;
-    		case "minecraft:story/voluntary_exile":
-                this.gameAdvancements[16] = adv;
-    		case "minecraft:husbandry/bee_our_guest":
-                this.gameAdvancements[17] = adv;
-    		case "minecraft:safely_harvest_honey":
-    			this.gameAdvancements[18] = adv;
-    		case "minecraft:end/kill_dragon":
-    			this.gameAdvancements[19] = adv;
-    		case "minecraft:story/deflect_arrow":
-    			this.gameAdvancements[20] = adv;
-    		case "minecraft:husbandry/breed_an_animal":
-    			this.gameAdvancements[21] = adv;
-    		case "minecraft:husbandry/tame_an_animal":
-    			this.gameAdvancements[22] = adv;
-    		case "minecraft:husbandry/tactical_fishing":
-    			this.gameAdvancements[23] = adv;
-    		case "minecraft:end/root":
-    			this.gameAdvancements[24] = adv;
+            case "minecraft:story/form_obsidian": this.gameAdvancements[0] = adv;
+            	break;
+            case "minecraft:nether/brew_potion": this.gameAdvancements[1] = adv;
+        		break;
+            case "minecraft:nether/distract_piglin": this.gameAdvancements[2] = adv;
+            	break;
+            case "minecraft:nether/get_wither_skull": this.gameAdvancements[3] = adv;
+            	break;
+    		case "minecraft:story/follow_ender_eye": this.gameAdvancements[4] = adv;
+            	break;
+    		case "minecraft:adventure/ol_betsy": this.gameAdvancements[5] = adv;
+            	break;
+    		case "minecraft:adventure/hero_of_the_village": this.gameAdvancements[6] = adv;
+            	break;
+    		case "minecraft:nether/ride_strider": this.gameAdvancements[7] = adv;
+            	break;
+    		case "minecraft:nether/obtain_blaze_rod": this.gameAdvancements[8] = adv;
+            	break;
+    		case "minecraft:end/enter_end_gateway": this.gameAdvancements[9] = adv;
+            	break;
+    		case "minecraft:story/enchant_item": this.gameAdvancements[10] = adv;
+            	break;
+    		case "minecraft:adventure/trade": this.gameAdvancements[11] = adv;
+            	break;
+    		case "minecraft:adventure/kill_a_mob": this.gameAdvancements[12] = adv;
+            	break;
+    		case "minecraft:adventure/summon_iron_golem": this.gameAdvancements[13] = adv;
+            	break;
+    		case "minecraft:story/shiny_gear": this.gameAdvancements[14] = adv;
+            	break;
+    		case "minecraft:adventure/whos_the_pillager_now": this.gameAdvancements[15] = adv;
+            	break;
+    		case "minecraft:story/voluntary_exile": this.gameAdvancements[16] = adv;
+            	break;
+    		case "minecraft:husbandry/bee_our_guest": this.gameAdvancements[17] = adv;
+            	break;
+    		case "minecraft:safely_harvest_honey": this.gameAdvancements[18] = adv;
+    			break;
+    		case "minecraft:end/kill_dragon": this.gameAdvancements[19] = adv;
+    			break;
+    		case "minecraft:story/deflect_arrow": this.gameAdvancements[20] = adv;
+    			break;
+    		case "minecraft:husbandry/breed_an_animal": this.gameAdvancements[21] = adv;
+    			break;
+    		case "minecraft:husbandry/tame_an_animal": this.gameAdvancements[22] = adv;
+    			break;
+    		case "minecraft:husbandry/tactical_fishing": this.gameAdvancements[23] = adv;
+    			break;
+    		case "minecraft:end/root": this.gameAdvancements[24] = adv;
+    			break;
             }
         }
         String location = "plugins" + File.separator + "bingoSaves/";
