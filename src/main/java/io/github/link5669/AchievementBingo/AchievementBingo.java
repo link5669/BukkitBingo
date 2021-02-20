@@ -24,10 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.server.BroadcastMessageEvent;
 
-import net.md_5.bungee.api.*;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
 
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.inventory.ItemStack;
@@ -115,6 +112,7 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
 	            e.printStackTrace();
 	         }
         }
+        
 		getServer().getPluginManager().registerEvents(this, this);
     }
     
@@ -144,9 +142,6 @@ public final class AchievementBingo extends JavaPlugin implements Listener, Comm
     		}
     		if ((Files.exists(path)) && args[0].equalsIgnoreCase("check")) {
 		    	String[] progress = bPlayer.getAchievementProgress(path);
-		    	TextComponent message = new TextComponent("Hello world");
-//		    	message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,  new ComponentBuilder(this.gameAdvancements[0].getName()).create()));
-//		    	bPlayer.getPlayer().sendMessage(message);
     			bPlayer.getPlayer().sendMessage(progress[0] +  progress[1] + progress[2] + progress[3] + progress[4]);
     			bPlayer.getPlayer().sendMessage(progress[5] +  progress[6] + progress[7] + progress[8] + progress[9]);
     			bPlayer.getPlayer().sendMessage(progress[10] +  progress[11] + progress[12] + progress[13] + progress[14]);
