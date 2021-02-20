@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 
 import org.bukkit.entity.Player;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class BingoPlayer {
 	private Player player;
 	private Boolean[] achievementsFinished = new Boolean[25];
@@ -32,7 +34,7 @@ public class BingoPlayer {
 	}
 
 	public String getFileName() {
-    	String name = "plugins" + File.separator + "bingoSaves/" + this.getPlayerName() + ".txt";
+    	String name = "plugins" + File.separator + "bingoSaves" + File.separator + this.getPlayerName() + ".txt";
     	return name;
     }
 	
@@ -50,9 +52,9 @@ public class BingoPlayer {
 		String[] stringArray = new String[25];
 		for (int i = 0; i < stringArray.length; i++) {
 			if (achievementsFinished[i] == false) {
-				stringArray[i] = "[x]";
+				stringArray[i] = ChatColor.RED + "[x]" + ChatColor.RESET;
 			} else {
-				stringArray[i] = "[✓]";
+				stringArray[i] = ChatColor.GREEN + "[✓]" + ChatColor.RESET;
 			}
 		}
 		return stringArray;
